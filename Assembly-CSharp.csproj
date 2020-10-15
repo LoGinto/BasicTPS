@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\WeaponAnimationHandler.cs" />
+    <Compile Include="Assets\Scripts\Gun.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
