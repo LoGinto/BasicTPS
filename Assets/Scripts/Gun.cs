@@ -18,6 +18,7 @@ public class Gun : MonoBehaviour
     public bool isPlayer= true;
     [SerializeField] GameObject flash;
     [SerializeField] LineRenderer bulletTrail;
+    [SerializeField] GameObject bulletHole;
     RaycastHit hit;
     public enum ShootType
     {
@@ -69,6 +70,15 @@ public class Gun : MonoBehaviour
                     Debug.DrawRay(cam.transform.position, cam.transform.forward);
                     Debug.Log(hit.transform.name);
                     SpawnTrace(hit.point);
+                    if (hit.collider.GetComponent<Health>())
+                    {
+                        hit.collider.GetComponent<Health>().TakeDamage(damage);
+                    }
+                    else
+                    {
+                        GameObject bh = Instantiate(bulletHole, hit.point,Quaternion.FromToRotation(Vector3.up,hit.normal));
+                        Destroy(bh, 10f);
+                    }
                 }
                 else
                 {

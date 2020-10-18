@@ -135,6 +135,7 @@ MonoBehaviour:
   isPlayer: 1
   flash: {fileID: 5485814027496234790, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
   bulletTrail: {fileID: 120648884187509030, guid: d2ec70c814159504cb3e12e99b00b151, type: 3}
+  bulletHole: {fileID: 7219074950401954740, guid: 9eaeaf9df054fd64fb501c26eda550df, type: 3}
   shootType: 1
 --- !u!1 &2704478622308762065
 GameObject:
