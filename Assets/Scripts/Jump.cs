@@ -9,14 +9,19 @@ public class Jump : MonoBehaviour
     [SerializeField] float jumpForwardDistance = 10;
     [SerializeField] float jumpUpDist = 10;
     private float distanceToGround;
+    
     Collider playerCollider;
+    Rigidbody rb;
     private bool isJumping;
     // Start is called before the first frame update
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
+        
         playerCollider = gameObject.GetComponent<Collider>();
         distanceToGround = playerCollider.bounds.extents.y;
+        
     }
     public bool isOnGround()
     {
@@ -27,6 +32,17 @@ public class Jump : MonoBehaviour
     void Update()
     {
         JumpForward();
+        if (isOnGround() && animator.GetBool("isAiming"))
+        {
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+        }
+        else if(!animator.GetBool("isAiming"))
+        {
+            rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
+        }
+        //else{
+        //also add falling behaviour in else
+        //}
     }
 
     private void JumpForward()
@@ -54,6 +70,7 @@ public class Jump : MonoBehaviour
             isJumping = false;
             animator.ResetTrigger("JumpForward");
         }
+        
     }
     public bool IsJumping()
     {

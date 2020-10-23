@@ -37,7 +37,7 @@ public class WeaponAnimationHandler : MonoBehaviour
         if (!myCamera.isActiveAndEnabled||myCamera == null)
         {
             myCamera = GameObject.FindObjectOfType<Camera>();
-            Debug.Log("cam " + myCamera.gameObject.name);
+           
         }
         if (animator.GetBool("isAiming")||isAiming == true)
         {
