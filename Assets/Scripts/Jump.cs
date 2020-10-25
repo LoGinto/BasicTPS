@@ -9,7 +9,6 @@ public class Jump : MonoBehaviour
     [SerializeField] float jumpForwardDistance = 10;
     [SerializeField] float jumpUpDist = 10;
     private float distanceToGround;
-    
     Collider playerCollider;
     Rigidbody rb;
     private bool isJumping;
