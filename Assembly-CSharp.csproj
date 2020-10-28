@@ -53,12 +53,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Gun.cs" />
+    <Compile Include="Assets\Scripts\Jump.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\Health.cs" />
     <Compile Include="Assets\Scripts\WeaponAnimationHandler.cs" />
-    <Compile Include="Assets\Prefabs\BulletTrail\LineFade.cs" />
-    <Compile Include="Assets\Scripts\Jump.cs" />
     <Compile Include="Assets\Scripts\Ledge.cs" />
+    <Compile Include="Assets\Prefabs\BulletTrail\LineFade.cs" />
+    <Compile Include="Assets\Scripts\IK_Test\IK_Snap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

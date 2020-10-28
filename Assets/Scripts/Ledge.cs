@@ -6,13 +6,14 @@ public class Ledge : MonoBehaviour
 {
     public LayerMask grabbableLayer;
     [SerializeField] float rayCastDist = 4f;
-    [SerializeField] float heightOfJump = 3.5f;
+    [SerializeField] float heightOfJump = 3f;
+    public float grabHeight = 1f;
     [SerializeField] float minWidth = 2f;
     [SerializeField] float miniwait = 2f;
     Vector3 tangent;
-    [SerializeField] RuntimeAnimatorController parcour;
+    //[SerializeField] RuntimeAnimatorController parcour;
     public bool debugRootMotion = false;
-    RuntimeAnimatorController initRuntime;
+    //RuntimeAnimatorController initRuntime;
     bool isInGrabbingStage = false;
     RaycastHit hit;
     Ray ray;
@@ -22,7 +23,7 @@ public class Ledge : MonoBehaviour
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
-        initRuntime = animator.runtimeAnimatorController;
+       // initRuntime = animator.runtimeAnimatorController;
         jumpScript = gameObject.GetComponent<Jump>();
     }
 
@@ -36,41 +37,26 @@ public class Ledge : MonoBehaviour
             if (Physics.Raycast(ray,out hit,rayCastDist,grabbableLayer))
             {
                 CalculateTangent();
+                Debug.DrawRay(transform.position,ray.direction);
                 //get height and width
                 GameObject hitObject = hit.collider.gameObject;
                 if (hitObject.GetComponent<BoxCollider>())
                 {
                     BoxCollider box = hitObject.GetComponent<BoxCollider>();
-                    transform.rotation = Quaternion.FromToRotation(tangent, hit.normal);
+                    //transform.eulerAngles = tangent;
                     float height = hit.transform.localScale.y * ((BoxCollider)hit.collider).size.y;
                     float width = hit.transform.localScale.z * ((BoxCollider)hit.collider).size.z;
                     if (heightOfJump > height && width>minWidth&&!isInGrabbingStage)
                     {
                         Debug.Log("Grab");
-                        ClimbOverFence();
+                        //ClimbOverFence();
                     }
                 }
             }
         }
         animator.applyRootMotion = debugRootMotion;
     }
-    void ClimbOverFence()
-    {
-        isInGrabbingStage = true;
-        animator.runtimeAnimatorController = parcour as RuntimeAnimatorController;
-        animator.SetBool("JumpClimb", true);
-        gameObject.GetComponent<Rigidbody>().useGravity = false;
-        StartCoroutine(WaitAndTurnBack());
-    }
-    IEnumerator WaitAndTurnBack()
-    {
-        yield return new WaitForSeconds(1f);
-        animator.SetBool("JumpClimb", false);
-        yield return new WaitForSeconds(miniwait);
-        gameObject.GetComponent<Rigidbody>().useGravity = true;
-        animator.runtimeAnimatorController = initRuntime as RuntimeAnimatorController;
-        isInGrabbingStage = false;
-    }
+    
     void CalculateTangent()
     {
         Vector3 normal = hit.normal;
@@ -84,5 +70,9 @@ public class Ledge : MonoBehaviour
         {
             tangent = t2;
         }
+    }
+    public bool GetGrabbing()
+    {
+        return isInGrabbingStage;
     }
 }

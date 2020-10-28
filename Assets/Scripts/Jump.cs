@@ -42,6 +42,14 @@ public class Jump : MonoBehaviour
         //else{
         //also add falling behaviour in else
         //}
+        if (this.animator.GetCurrentAnimatorStateInfo(0).IsName("JumpRifle"))
+        {
+            isJumping = true;
+        }
+        else
+        {
+            isJumping = false;
+        }
     }
 
     private void JumpForward()
@@ -57,16 +65,15 @@ public class Jump : MonoBehaviour
                 Vector3 udpatedVector = verticalAxis * cameraForward + horizontalAxis * myCamera.transform.right;
                 transform.LookAt(udpatedVector + transform.position);
                 animator.SetTrigger("JumpForward");
-                animator.applyRootMotion = true;
-                isJumping = true;
+                animator.applyRootMotion = true;                
                 transform.position += transform.forward * Time.deltaTime * jumpForwardDistance;
                 transform.position += transform.up * Time.deltaTime * jumpUpDist;
-            }
+            }          
         }
         else if (isOnGround() == false)
         {
             animator.applyRootMotion = false;
-            isJumping = false;
+            //isJumping = false;
             animator.ResetTrigger("JumpForward");
         }
         
