@@ -12,18 +12,21 @@ public class Ledge : MonoBehaviour
     [SerializeField] float miniwait = 2f;
     Vector3 tangent;
     //[SerializeField] RuntimeAnimatorController parcour;
+    //public Transform demoTrans;
+    public float smooth = 2f;
     public bool debugRootMotion = false;
     //RuntimeAnimatorController initRuntime;
     bool isInGrabbingStage = false;
     RaycastHit hit;
     Ray ray;
     Animator animator;
+   
     Jump jumpScript;
     // Start is called before the first frame update
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
-       // initRuntime = animator.runtimeAnimatorController;
+        //initRuntime = animator.runtimeAnimatorController;
         jumpScript = gameObject.GetComponent<Jump>();
     }
 
@@ -32,7 +35,7 @@ public class Ledge : MonoBehaviour
     {
         
         if (jumpScript.IsJumping())
-        {
+        {            
             ray = new Ray(transform.position,transform.forward);
             if (Physics.Raycast(ray,out hit,rayCastDist,grabbableLayer))
             {
@@ -49,14 +52,36 @@ public class Ledge : MonoBehaviour
                     if (heightOfJump > height && width>minWidth&&!isInGrabbingStage)
                     {
                         Debug.Log("Grab");
-                        //ClimbOverFence();
+                        isInGrabbingStage = true;                                
                     }
                 }
             }
+            
         }
         animator.applyRootMotion = debugRootMotion;
-    }
+        //Debug.DrawRay(demoTrans.transform.position, demoTrans.forward, Color.green);
+        //RaycastHit secHit;
+        //if (Physics.Raycast(demoTrans.transform.position, demoTrans.forward, out secHit, grabbableLayer))
+        //{
+        //    if (isInGrabbingStage)
+        //    {
+        //        float distance = Vector3.Distance(transform.position, hit.point);
+        //        if (distance > 0)
+        //        {
+        //            transform.position = Vector3.Lerp(
+        //            transform.position, hit.point,
+        //            Time.deltaTime * smooth / distance);
+        //        }
+        //        Debug.Log("Lerping");
+        //        gameObject.GetComponent<Movement>().enabled = false;
+        //    }
+
+        }
     
+    IEnumerator Waito()
+    {
+        yield return new WaitForSeconds(2);
+    }
     void CalculateTangent()
     {
         Vector3 normal = hit.normal;
