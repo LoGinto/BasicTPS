@@ -10,14 +10,32 @@ public class VaultOver : MonoBehaviour
     [SerializeField] GameObject lowerTrans;
     [SerializeField] Transform placeOfRaycast;
     [SerializeField] float raydist = 2f;
-    [SerializeField] float vaultTime = 3f;
+    [SerializeField] RuntimeAnimatorController leap;
+    RuntimeAnimatorController initRuntime;
+    private float vaultTime;
     Vector3 vaultEndPos;
+    Animator animator;
+    //Vector3 recordedStartPosition;
     bool isParcour;
     private float t_parkour;
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        initRuntime = animator.runtimeAnimatorController;
+    }
+   
     private void Update()
     {
         Debug.DrawRay(placeOfRaycast.position, placeOfRaycast.forward, Color.green);
         JumpOverLedge();
+        if (t_parkour >= 1f)
+        {
+            t_parkour = 0f;
+            isParcour = false;
+            animator.runtimeAnimatorController = initRuntime;
+            gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            gameObject.GetComponent<CharacterController>().enabled = true;
+        }
     }
 
     private void JumpOverLedge()
@@ -35,32 +53,23 @@ public class VaultOver : MonoBehaviour
             {
                 if (t_parkour < 1f)
                 {
-                    Vector3 recordedStartPosition = transform.position;
+                    //recordedStartPosition = transform.position;
                     vaultEndPos = GetVaultEnd();
-                    while (t_parkour < 1f)
+                    animator.runtimeAnimatorController = leap;
+                    if (animator.runtimeAnimatorController == leap)
                     {
-                        t_parkour += Time.deltaTime / vaultTime;
-                        transform.position = Vector3.Lerp(recordedStartPosition, vaultEndPos, t_parkour);
-                        if (t_parkour >= 1f)
-                        {
-                            break;
-                        }
+                        Debug.Log("Leap override"); 
+                        vaultTime = animator.GetCurrentAnimatorStateInfo(0).length;
                     }
 
+                    StartCoroutine(LerpTheChar());
                     ///
                     gameObject.GetComponent<Rigidbody>().isKinematic = true;
                     gameObject.GetComponent<CharacterController>().enabled = false;
                     ///
-                }
-                
-            }
-            if (t_parkour >= 1f)
-            {
-                t_parkour = 0f;
-                isParcour = false;
-                gameObject.GetComponent<Rigidbody>().isKinematic = false;
-                gameObject.GetComponent<CharacterController>().enabled = true;
-            }
+                }                
+
+            }            
         }
     }
 
@@ -81,6 +90,32 @@ public class VaultOver : MonoBehaviour
         else
         {
             return new Vector3();
+        }
+        
+    }
+    IEnumerator LerpTheChar()
+    {
+        
+            yield return StartCoroutine(VaultToPoint());
+            yield return new WaitForSeconds(0.3f);
+            //if (!isParcour|| t_parkour >= 1f)
+            //{
+            //    break;
+            //}
+        
+    }
+    IEnumerator VaultToPoint()
+    {
+        while (t_parkour < 1f)
+        {
+            t_parkour += Time.deltaTime / vaultTime;
+            transform.position = Vector3.Lerp(transform.position, vaultEndPos, t_parkour);
+            
+            if (t_parkour >= 1f)
+            {
+                break;
+            }
+            yield return null;
         }
     }
 }
