@@ -6,12 +6,13 @@ public class EnterAndExitCar : MonoBehaviour
 {
     [SerializeField] RuntimeAnimatorController car_enter_exit;
     RuntimeAnimatorController initialActorRuntimeController;
-    Animator animator;
-    Transform car; bool carNearby;
+    Animator animator,carAnimator;
+    Transform car, carEntryPoint,carDrivingPoint; bool carNearby;
+    
     public enum EnterState
     {
         outside,inside
-    }
+    } 
     EnterState enterState = EnterState.outside;
     // Start is called before the first frame update
     void Start()
@@ -23,9 +24,13 @@ public class EnterAndExitCar : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
         carNearby = (car!=null);
         if (carNearby)
         {
+            carEntryPoint = car.GetComponent<CarAnimProperties>().AnimEnterPosition();
+            carDrivingPoint = car.GetComponent<CarAnimProperties>().AnimDrivePosition();
+            carAnimator = car.GetComponent<Animator>();
             if (Input.GetKeyDown(KeyCode.F))//to pay respects
             {
                 if(enterState == EnterState.outside)
@@ -38,10 +43,12 @@ public class EnterAndExitCar : MonoBehaviour
         {
             ExitCar();
         }
+
     }
     void EnterCar()
-    {        
-        StartCoroutine(EnterCarAnim());        
+    {   
+        
+        StartCoroutine(EnterCarAnim());
         
     }
     IEnumerator EnterCarAnim()
@@ -56,18 +63,19 @@ public class EnterAndExitCar : MonoBehaviour
             if (car != null)
             {
                 car.GetComponent<Animator>().SetBool("Open", 0.3f < time && time < 1f);
-                transform.position = Vector3.Lerp(car.GetComponent<CarAnimProperties>().AnimEnterPosition().transform.position, car.GetComponent<CarAnimProperties>().AnimDrivePosition().transform.position, time / 1.3f);
-                transform.rotation = Quaternion.Lerp(car.GetComponent<CarAnimProperties>().AnimEnterPosition().transform.rotation, car.GetComponent<CarAnimProperties>().AnimDrivePosition().transform.rotation, time / 1.3f);
+                transform.position = Vector3.Lerp(carEntryPoint.position,carDrivingPoint.position, time / 1.3f);
+                transform.rotation = Quaternion.Lerp(carEntryPoint.rotation,carDrivingPoint.rotation, time / 1.3f);
             }
             time += Time.fixedDeltaTime;
             //yield return new WaitForFixedUpdate();
             yield return null;
         }
-        enterState = EnterState.inside;
+        //enterState = EnterState.inside;
     }
     void ExitCar()
     {
-        StartCoroutine(ExitCarAnim());                
+        StartCoroutine(ExitCarAnim());
+        
     }
     IEnumerator ExitCarAnim()
     {
@@ -77,20 +85,32 @@ public class EnterAndExitCar : MonoBehaviour
         float animTime = animator.GetCurrentAnimatorStateInfo(0).length;
         while (time < animTime)
         {
-            if (car != null)
+            try
             {
-                car.GetComponent<Animator>().SetBool("Open", 0.0f < time && time < 1f);
-                transform.position = Vector3.Lerp(car.GetComponent<CarAnimProperties>().AnimDrivePosition().transform.position, car.GetComponent<CarAnimProperties>().AnimEnterPosition().transform.position, time / 1.3f);
-                transform.rotation = Quaternion.Lerp(car.GetComponent<CarAnimProperties>().AnimDrivePosition().transform.rotation, car.GetComponent<CarAnimProperties>().AnimEnterPosition().transform.rotation, time / 1.3f);
+                carAnimator.SetBool("Open", 0.0f < time && time < 1f);
+                transform.position = Vector3.Lerp(carDrivingPoint.position, carEntryPoint.position, time / 1.3f);
+                transform.rotation = Quaternion.Lerp(carDrivingPoint.rotation, carEntryPoint.rotation, time / 1.3f);
+            }
+            catch
+            {
+                Debug.Log("exiting coroutine error");
+                break;
             }
             time += Time.fixedDeltaTime;
             //yield return new WaitForFixedUpdate();
             yield return null;
-        }
+        }                        
+    }
+    public void EnterCarAnimEvent()
+    {
+        enterState = EnterState.inside;
+        transform.parent = car;
+    }
+    public void ExitCarAnimEvent()
+    {
         enterState = EnterState.outside;
-        
+        transform.parent = null;     
         animator.runtimeAnimatorController = initialActorRuntimeController;
-
     }
     public Transform GetCar()
     {
