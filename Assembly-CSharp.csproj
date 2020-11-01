@@ -52,16 +52,19 @@
     <UnityVersion>2020.1.8f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\ChildColl.cs" />
     <Compile Include="Assets\Scripts\Gun.cs" />
     <Compile Include="Assets\Scripts\TestScripts\IK_Snap.cs" />
     <Compile Include="Assets\Scripts\Jump.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\Health.cs" />
+    <Compile Include="Assets\Scripts\VaultOver.cs" />
     <Compile Include="Assets\Scripts\WeaponAnimationHandler.cs" />
-    <Compile Include="Assets\Scripts\Ledge.cs" />
+    <Compile Include="Assets\Scripts\TestScripts\Ledge.cs" />
     <Compile Include="Assets\Prefabs\BulletTrail\LineFade.cs" />
-    <Compile Include="Assets\Scripts\TestScripts\VaultOver.cs" />
-    <Compile Include="Assets\Scripts\TestScripts\ChildColl.cs" />
+    <Compile Include="Assets\Scripts\EnterAndExitCar.cs" />
+    <Compile Include="Assets\Scripts\CarTrigger.cs" />
+    <Compile Include="Assets\Scripts\CarAnimProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
