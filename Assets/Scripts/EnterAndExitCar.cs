@@ -8,7 +8,8 @@ public class EnterAndExitCar : MonoBehaviour
     RuntimeAnimatorController initialActorRuntimeController;
     Animator animator,carAnimator;
     Transform car, carEntryPoint,carDrivingPoint; bool carNearby;
-    
+    Collider carCol;
+    EnableAgain enableAgain;
     public enum EnterState
     {
         outside,inside
@@ -18,6 +19,7 @@ public class EnterAndExitCar : MonoBehaviour
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
+        enableAgain = FindObjectOfType<EnableAgain>();
         initialActorRuntimeController = animator.runtimeAnimatorController;
     }
 
@@ -31,6 +33,7 @@ public class EnterAndExitCar : MonoBehaviour
             carEntryPoint = car.GetComponent<CarAnimProperties>().AnimEnterPosition();
             carDrivingPoint = car.GetComponent<CarAnimProperties>().AnimDrivePosition();
             carAnimator = car.GetComponent<Animator>();
+            carCol = car.GetComponent<Collider>();
             if (Input.GetKeyDown(KeyCode.F))//to pay respects
             {
                 if(enterState == EnterState.outside)
@@ -39,11 +42,17 @@ public class EnterAndExitCar : MonoBehaviour
                 }               
             }
         }
-        if (enterState == EnterState.inside && Input.GetKeyDown(KeyCode.F))
+        try
         {
-            ExitCar();
+            if (enterState == EnterState.inside && Input.GetKeyDown(KeyCode.F))
+            {
+                ExitCar();
+            }
         }
-
+        catch
+        {
+            Debug.Log("Catch exectuted in enter&exitcar");
+        }
     }
     void EnterCar()
     {   
@@ -72,7 +81,7 @@ public class EnterAndExitCar : MonoBehaviour
         }
         //enterState = EnterState.inside;
     }
-    void ExitCar()
+    public void ExitCar()
     {
         StartCoroutine(ExitCarAnim());
         
@@ -105,12 +114,23 @@ public class EnterAndExitCar : MonoBehaviour
     {
         enterState = EnterState.inside;
         transform.parent = car;
+        Physics.IgnoreCollision(this.gameObject.GetComponent<Collider>(), carCol);        
+    }
+    public void EnterCarAnimDisableEvent()
+    {
+        enableAgain.SetBool(true);
+        gameObject.SetActive(false);
+    }
+    public void UnparentAnim()
+    {
+        this.transform.parent = null;
     }
     public void ExitCarAnimEvent()
     {
         enterState = EnterState.outside;
-        transform.parent = null;     
-        animator.runtimeAnimatorController = initialActorRuntimeController;
+           
+        animator.runtimeAnimatorController = initialActorRuntimeController;       
+        TurnOnCollisionAnimEvent();       
     }
     public Transform GetCar()
     {
@@ -119,5 +139,14 @@ public class EnterAndExitCar : MonoBehaviour
     public void SetCar(Transform newCar)
     {
         car = newCar;
+    }
+    public EnterState GetEnterState()
+    {
+        return enterState;
+    }
+    
+    void TurnOnCollisionAnimEvent()
+    {
+        Physics.IgnoreCollision(this.gameObject.GetComponent<Collider>(), carCol,false);      
     }
 }
