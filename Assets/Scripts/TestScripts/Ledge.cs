@@ -39,7 +39,7 @@ public class Ledge : MonoBehaviour
             ray = new Ray(transform.position,transform.forward);
             if (Physics.Raycast(ray,out hit,rayCastDist,grabbableLayer))
             {
-                CalculateTangent();
+               // CalculateTangent();
                 Debug.DrawRay(transform.position,ray.direction);
                 //get height and width
                 GameObject hitObject = hit.collider.gameObject;
@@ -82,20 +82,7 @@ public class Ledge : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
     }
-    void CalculateTangent()
-    {
-        Vector3 normal = hit.normal;
-        Vector3 t1 = Vector3.Cross(normal, Vector3.forward);
-        Vector3 t2 = Vector3.Cross(normal, Vector3.up);
-        if (t1.magnitude > t2.magnitude)
-        {
-            tangent = t1;
-        }
-        else
-        {
-            tangent = t2;
-        }
-    }
+   
     public bool GetGrabbing()
     {
         return isInGrabbingStage;

@@ -57,6 +57,7 @@
     <Compile Include="Assets\Scripts\Gun.cs" />
     <Compile Include="Assets\Scripts\TestScripts\IK_Snap.cs" />
     <Compile Include="Assets\Scripts\Jump.cs" />
+    <Compile Include="Assets\Scripts\EnableAgain.cs" />
     <Compile Include="Assets\Scripts\EnterAndExitCar.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\Health.cs" />
@@ -66,7 +67,7 @@
     <Compile Include="Assets\Scripts\TestScripts\Ledge.cs" />
     <Compile Include="Assets\Prefabs\BulletTrail\LineFade.cs" />
     <Compile Include="Assets\Scripts\CarTrigger.cs" />
-    <Compile Include="Assets\Scripts\EnableAgain.cs" />
+    <Compile Include="Assets\Scripts\Cover.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
