@@ -9,6 +9,7 @@ public class Movement : MonoBehaviour
     Animator animator;
     Cover coverScript;
     Camera myCamera;
+    bool coverMove;
     CharacterController characterController;
     private void Start()
     {
@@ -25,11 +26,12 @@ public class Movement : MonoBehaviour
             Debug.Log("cam " + myCamera.gameObject.name);
         }
         if (coverScript.IsInCover())
-        {
+        {            
             MoveInCover();
         }
         else
         {
+            characterController.detectCollisions = true;
             if (!animator.GetBool("isAiming") || gameObject.GetComponent<WeaponAnimationHandler>().GetIsAiming() == false)
             {
                 Move();
@@ -43,6 +45,7 @@ public class Movement : MonoBehaviour
     }
     void MoveInCover()
     {
+        characterController.detectCollisions = false;
         float axis = Input.GetAxis("Horizontal");
         Debug.Log(axis);          
         if (axis > 0)
@@ -66,9 +69,17 @@ public class Movement : MonoBehaviour
         {
             animator.SetBool("IsMoving", false);    
         }
-        Vector3 moveDirection = axis * coverScript.GetTangent();
-        //transform.Translate(moveDirection * coverScript.moveInCoverSpeed, Space.World);
-        characterController.Move(moveDirection * coverScript.moveInCoverSpeed);
+        
+        RaycastHit hit;
+        //Vector3 v = transform.position + new Vector3(0, 0.1f, 0)+axis*transform.right;
+        Vector3 v = transform.position + new Vector3(0, 0.1f, 0) + (axis>0 ? transform.right*1.1f :-transform.right);
+        Debug.DrawLine(v,v+transform.forward*1,Color.red,5f);
+        if (Physics.Raycast(v, v + transform.forward * 1,out hit,coverScript.coverDetectionDist,coverScript.GetCoverLayerMask()))
+        {
+            Vector3 moveDirection = axis * coverScript.GetTangent();
+            //transform.Translate(moveDirection * coverScript.moveInCoverSpeed, Space.World);
+            characterController.Move(moveDirection * coverScript.moveInCoverSpeed);
+        }       
     }
     void Move()
     {

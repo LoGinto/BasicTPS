@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class Cover : MonoBehaviour
 {
-    RaycastHit hit;
-    Ray ray;
     [SerializeField] Transform rayCastPoint;
     [SerializeField] LayerMask coverLayer;
-    [SerializeField] float coverDetectionDist = 1f;
+    public  float coverDetectionDist = 1f;
+    public float moveInCoverSpeed = 3f;
+    public bool isFacingRight = false;
     [SerializeField] RuntimeAnimatorController coverOverride;
     [SerializeField] AnimatorOverrideController coverLeftOvveride;
     RuntimeAnimatorController initRuntimeOvverride;
+    Ray ray;
     Animator animator;
+    RaycastHit hit;
     bool isInCover = false;
-    public float moveInCoverSpeed = 3f;
     bool detectCover = false;
-    public bool isFacingRight = false;
     Vector3 tangent;
     // Start is called before the first frame update
     void Start()
@@ -49,6 +49,7 @@ public class Cover : MonoBehaviour
             //have to ask how to " stick to walls"
             isInCover = true;
             CalculateTangent();
+            Debug.Log("tangent " + tangent);
             animator.runtimeAnimatorController = coverOverride;
         }
     }
@@ -86,5 +87,9 @@ public class Cover : MonoBehaviour
     public RuntimeAnimatorController LeftCoverOvveride()
     {
         return coverLeftOvveride as RuntimeAnimatorController;
+    }
+    public LayerMask GetCoverLayerMask()
+    {
+        return coverLayer;
     }
 }

@@ -4139,7 +4139,7 @@ MonoBehaviour:
   coverDetectionDist: 1
   coverOverride: {fileID: 9100000, guid: 89fd374ab5c279b45b28c8cf96a8b748, type: 2}
   coverLeftOvveride: {fileID: 22100000, guid: 691fcd3e07b3b424dbeaf5ef6876cedf, type: 2}
-  moveInCoverSpeed: 3
+  moveInCoverSpeed: 0.1
   isFacingRight: 0
 --- !u!1 &723713392603141371
 GameObject:
