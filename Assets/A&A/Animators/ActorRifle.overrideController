@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ActorRifle
+  m_Controller: {fileID: 9100000, guid: ff608719e3ca50b40a54dfba902a2fa5, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 40cb22fad953d8d4f8570a296fc78e07, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 3edcc3d2eefdf7b45a2726952011afc0, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: c1c27743a8e568a45beadb35e63b6c2f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 657eb63746def334fbacb7617a4a9316, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: d934ad2b9ca3cde44a74715d1ba5163f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 9347770a3efdb8b4d826e15c417888e3, type: 2}

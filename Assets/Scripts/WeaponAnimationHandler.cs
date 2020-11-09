@@ -17,16 +17,21 @@ public class WeaponAnimationHandler : MonoBehaviour
     [SerializeField] CanvasGroup reticleImageCanvasGroup;
     Camera myCamera;
     [SerializeField] GameObject cineCamToEnable;
+    [SerializeField] RuntimeAnimatorController[] weaponControllers;
     private void Start()
     {
         myCamera = GameObject.FindObjectOfType<Camera>();
-        animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>(); 
         SwitchCams();
         weaponHolder = GameObject.FindGameObjectWithTag("WeaponHolder").transform;
     }
     private void Update()
     {
         SwitchCams();
+        if (GetPressedNumber() != -1 && !gameObject.GetComponent<Cover>().IsInCover())
+        {           
+            WeaponChangeByNumber(GetPressedNumber()); 
+        }
         foreach (Transform weapon in weaponHolder)
         {
             if (weapon.gameObject.activeSelf == true)
@@ -100,4 +105,31 @@ public class WeaponAnimationHandler : MonoBehaviour
     {
         return isAiming;
     }
+   private void WeaponChangeByNumber(int input)
+    {
+        try
+        {
+            if (input < weaponControllers.Length)
+            {
+                animator.runtimeAnimatorController = weaponControllers[input];
+            }
+        }
+        catch
+        {
+            Debug.Log("catch in WeaponChangeByNumber");
+        }
+        Debug.Log(input);
+    }
+    private int GetPressedNumber()
+    {
+        for (int number = 0; number <= weaponControllers.Length; number++)
+        {
+            if (Input.GetKeyDown(number.ToString()))
+            {                
+                return number;                
+            }               
+        }
+        return -1;
+    }
+
 }
