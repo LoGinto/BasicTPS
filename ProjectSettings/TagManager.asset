@@ -8,6 +8,7 @@ TagManager:
   - WeaponHolder
   - AimCam
   - LowObj
+  - Helicopter
   layers:
   - Default
   - TransparentFX

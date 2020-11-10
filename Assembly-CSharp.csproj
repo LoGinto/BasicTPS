@@ -61,13 +61,15 @@
     <Compile Include="Assets\Scripts\EnterAndExitCar.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\Health.cs" />
+    <Compile Include="Assets\Scripts\Cover.cs" />
     <Compile Include="Assets\Scripts\VaultOver.cs" />
     <Compile Include="Assets\Scripts\CarAnimProperties.cs" />
     <Compile Include="Assets\Scripts\WeaponAnimationHandler.cs" />
     <Compile Include="Assets\Scripts\TestScripts\Ledge.cs" />
     <Compile Include="Assets\Prefabs\BulletTrail\LineFade.cs" />
     <Compile Include="Assets\Scripts\CarTrigger.cs" />
-    <Compile Include="Assets\Scripts\Cover.cs" />
+    <Compile Include="Assets\Scripts\TestScripts\Helicopter_Base.cs" />
+    <Compile Include="Assets\Scripts\TestScripts\EnterHeli.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
